@@ -20,6 +20,7 @@ import { RecipeService } from './recipes/recipe.service';
 import { DataStorageService } from "app/shared/data-storage.service";
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
+import { CookieModule } from 'ngx-cookie';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { SigninComponent } from './auth/signin/signin.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CookieModule.forRoot()
   ],
   providers: [ShoppingListService, RecipeService, DataStorageService],
   bootstrap: [AppComponent]

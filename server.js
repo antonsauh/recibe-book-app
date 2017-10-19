@@ -16,20 +16,21 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 app.put('/api/recipes', (req, res) => {
     req.body.forEach(function(recipe) {
-        var newRecipe = new Recipe(recipe);
-        if(newRecipe._id) {
-            Recipe.findByIdAndUpdate(newRecipe._id, newRecipe).then((recipe)=> {
+        console.log(recipe);
+        if(recipe._id) {
+            console.log("here");
+            Recipe.findByIdAndUpdate(recipe._id, {$set: recipe}).then((recipe)=> {
             }).catch((e) => {
                 res.send(e);
             })
         }else {
+            var newRecipe = new Recipe(recipe);
             newRecipe.save().then(() => {
             }).catch((e) => {
                 res.send(e);
             })
         }
     });
-    res.status(200).send("all done");
 });
 
 app.get('/api/recipes', (req, res) => {
