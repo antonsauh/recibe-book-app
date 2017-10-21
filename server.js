@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const {Recipe} = require('./models/recipe');
+const {User} = require('./models/user');
+const {authenticate} = require('./middleware/authenticate');
 
 mongoose.connect('mongodb://localhost:27017/RecipeBook', {
     useMongoClient: true
@@ -14,11 +16,23 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
+app.post('/api/signup', (req, res) => {
+    var user = new User({
+        email: req.body.email,
+        password: req.body.password
+    });
+    user.save().then(() => {
+        return user.generateAuthToken();
+    }).then((token)=> {
+        res.header('x-auth', token).send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
+    })
+});
+
 app.put('/api/recipes', (req, res) => {
     req.body.forEach(function(recipe) {
-        console.log(recipe);
         if(recipe._id) {
-            console.log("here");
             Recipe.findByIdAndUpdate(recipe._id, {$set: recipe}).then((recipe)=> {
             }).catch((e) => {
                 res.send(e);

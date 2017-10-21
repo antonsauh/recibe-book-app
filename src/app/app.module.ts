@@ -21,6 +21,7 @@ import { DataStorageService } from "app/shared/data-storage.service";
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { CookieModule } from 'ngx-cookie';
+import { AuthService } from "app/auth/auth.service";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import { CookieModule } from 'ngx-cookie';
     AppRoutingModule,
     CookieModule.forRoot()
   ],
-  providers: [ShoppingListService, RecipeService, DataStorageService],
+  providers: [ShoppingListService, RecipeService, DataStorageService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
