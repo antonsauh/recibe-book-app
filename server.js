@@ -30,6 +30,24 @@ app.post('/api/signup', (req, res) => {
     })
 });
 
+app.post('/api/signin', (req, res) => {
+    User.findByCredentials(req.body.email, req.body.password).then((user) => {
+        return user.generateAuthToken().then((token) => {
+            res.header('x-auth', token).send(user);
+        });
+    }).catch((e) => {
+        res.status(400).send();
+    })
+});
+
+app.delete('/api/signout', (req, res) => {
+    req.user.removeToken(req.body.token).then(() => {
+        res.status(200).send();
+    }, () => {
+        res.status(400).send();
+    })
+})
+
 app.put('/api/recipes', (req, res) => {
     req.body.forEach(function(recipe) {
         if(recipe._id) {
